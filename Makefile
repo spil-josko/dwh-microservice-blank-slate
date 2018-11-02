@@ -37,7 +37,7 @@ USE_JENKINS_UP=false
 # Or get it, if it's not there
 GITURL:=$(shell git remote -v | awk '{print $$2}' | head -1 | sed -E 's/(.*)\/[^\/].*$$/\1/')
 $(.ME-ext)microservices-ext:
-	git clone -q $(GITURL)/microservices-ext
+	git clone -q https://github.com/spilgames/microservices-ext
 	-@test "`grep microservices-ext .gitignore`" || echo "microservices-ext/" >> .gitignore
 	@make $(MAKECMDGOALS)
 
