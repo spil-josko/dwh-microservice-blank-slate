@@ -4,29 +4,24 @@ items:
 - apiVersion: batch/v1beta1
   kind: CronJob
   metadata:
-    name: adcolony-importer-publishers-daily
-  spec:
-# Only one can run at a time
-    concurrencyPolicy: Forbid
-# Must start within 5 minutes of schedule
-    startingDeadlineSeconds: 300
+    name: dwh-microservice-blank-slate
+  spec: 
+    concurrencyPolicy: Forbid 
+    startingDeadlineSeconds: 600
     schedule: "0 4 * * *"
     jobTemplate:
-      spec:
-# If not finished in one hour, kill and fail the job.
-        activeDeadlineSeconds: 3600
-# Only retry running the pod 3 times
+      spec: 
+        activeDeadlineSeconds: 3600 
         backoffLimit: 3
         template:
           spec:
             containers:
-            - name: adcolony-importer-publishers-daily
-              image: eu.gcr.io/spil-infra-registry/dwh-adcolony-importer:0000000000
+            - name: dwh-microservice-blank-slate
+              image: eu.gcr.io/spil-infra-registry/dwh-microservice-blank-slate:0000000000
               args:
-              - publishers_daily
+              - blank-slate
               envFrom:
-              - configMapRef:
-                   name: dwh-importer-env
+              - configMapRef: 
               volumeMounts:
               - name: dwh-importer
                 mountPath: /opt/secrets/service-account
@@ -36,7 +31,4 @@ items:
             volumes:
             - name: dwh-importer
               secret:
-                secretName: dwh-importer
-            - name: dwh-adcolony-importer
-              secret:
-                secretName: dwh-adcolony-importer
+                secretName: dwh-importer 
