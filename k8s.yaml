@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: List
+items:
+- apiVersion: batch/v1beta1
+  kind: CronJob
+  metadata:
+    name: adcolony-importer-publishers-daily
+  spec:
+# Only one can run at a time
+    concurrencyPolicy: Forbid
+# Must start within 5 minutes of schedule
+    startingDeadlineSeconds: 300
+    schedule: "0 4 * * *"
+    jobTemplate:
+      spec:
+# If not finished in one hour, kill and fail the job.
+        activeDeadlineSeconds: 3600
+# Only retry running the pod 3 times
+        backoffLimit: 3
+        template:
+          spec:
+            containers:
+            - name: adcolony-importer-publishers-daily
+              image: eu.gcr.io/spil-infra-registry/dwh-adcolony-importer:0000000000
+              args:
+              - publishers_daily
+              envFrom:
+              - configMapRef:
+                   name: dwh-importer-env
+              volumeMounts:
+              - name: dwh-importer
+                mountPath: /opt/secrets/service-account
+              - name: dwh-adcolony-importer
+                mountPath: /opt/config
+            restartPolicy: Never
+            volumes:
+            - name: dwh-importer
+              secret:
+                secretName: dwh-importer
+            - name: dwh-adcolony-importer
+              secret:
+                secretName: dwh-adcolony-importer

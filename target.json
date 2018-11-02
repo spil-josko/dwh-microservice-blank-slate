@@ -1,0 +1,7 @@
+[
+    {
+        "provider" : "google",
+        "project" : "spil-bi-native",
+        "region" : "europe-west1"
+    }
+]

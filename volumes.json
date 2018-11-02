@@ -1,0 +1,11 @@
+{
+    "cloudstorage": {
+        "type": "secret",
+        "secret": "dwh-importer",
+        "mountPath": "/opt/secrets/service-account",
+        "from-files": [
+            "volumes/key.json"
+        ],
+        "auto-create": false
+    }
+}

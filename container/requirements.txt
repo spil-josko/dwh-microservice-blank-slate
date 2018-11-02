@@ -1,0 +1,17 @@
+# required for unit testing with mocking
+pytest>=2.8.5
+coverage>=4.2
+unittest2==1.1.0
+mock
+
+# for parsing command line arguments
+argparse==1.4.0
+
+# for interacting with bigquery
+google-api-python-client==1.6.2
+
+# for sending api requests
+requests
+
+# bi shared library
+-e git+https://github.com/spilgames/dwh-lib-utilities.git#egg=lib_utilities
